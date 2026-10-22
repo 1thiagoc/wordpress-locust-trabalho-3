@@ -1,0 +1,30 @@
+﻿{
+    "maquina":  "DESKTOP-5LB6RUD",
+    "n_calibracao":  2,
+    "cenarios":  [
+                     {
+                         "id":  1,
+                         "nome":  "imagem_1mb",
+                         "post":  5,
+                         "min":  32,
+                         "med":  80,
+                         "max":  160
+                     },
+                     {
+                         "id":  2,
+                         "nome":  "texto_400kb",
+                         "post":  8,
+                         "min":  32,
+                         "med":  80,
+                         "max":  160
+                     },
+                     {
+                         "id":  3,
+                         "nome":  "imagem_300kb",
+                         "post":  10,
+                         "min":  32,
+                         "med":  80,
+                         "max":  160
+                     }
+                 ]
+}

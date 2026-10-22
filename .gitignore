@@ -1,0 +1,31 @@
+
+# Python: cache e arquivos compilados
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# WordPress local: arquivos da instalacao e dados montados no Docker
+/wordpress/
+
+# Configuracoes locais e credenciais
+.env
+.env.*
+!.env.example
+
+# Resultados intermediarios do Locust: arquivos brutos de cada execucao
+**/calibracao/
+*_stats.csv
+*_stats_history.csv
+*_failures.csv
+
+# Logs
+*.log
+
+# Arquivos do sistema operacional
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Configuracoes locais do editor
+.vscode/

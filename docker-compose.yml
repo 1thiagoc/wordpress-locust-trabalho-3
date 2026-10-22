@@ -1,0 +1,94 @@
+services:
+  mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: r00t
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: usr-wordpress
+      MYSQL_PASSWORD: pwd-wordpress
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  wordpress1:
+    image: wordpress:5.4.2-php7.2-apache
+    depends_on:
+      - mysql
+    environment:
+      WORDPRESS_DB_HOST: mysql:3306
+      WORDPRESS_DB_USER: usr-wordpress
+      WORDPRESS_DB_PASSWORD: pwd-wordpress
+      WORDPRESS_DB_NAME: wordpress
+    volumes:
+      - ./wordpress:/var/www/html
+
+  wordpress2:
+    image: wordpress:5.4.2-php7.2-apache
+    depends_on:
+      - mysql
+    environment:
+      WORDPRESS_DB_HOST: mysql:3306
+      WORDPRESS_DB_USER: usr-wordpress
+      WORDPRESS_DB_PASSWORD: pwd-wordpress
+      WORDPRESS_DB_NAME: wordpress
+    volumes:
+      - ./wordpress:/var/www/html
+
+  wordpress3:
+    image: wordpress:5.4.2-php7.2-apache
+    depends_on:
+      - mysql
+    environment:
+      WORDPRESS_DB_HOST: mysql:3306
+      WORDPRESS_DB_USER: usr-wordpress
+      WORDPRESS_DB_PASSWORD: pwd-wordpress
+      WORDPRESS_DB_NAME: wordpress
+    volumes:
+      - ./wordpress:/var/www/html
+
+  wordpress4:
+    image: wordpress:5.4.2-php7.2-apache
+    depends_on:
+      - mysql
+    environment:
+      WORDPRESS_DB_HOST: mysql:3306
+      WORDPRESS_DB_USER: usr-wordpress
+      WORDPRESS_DB_PASSWORD: pwd-wordpress
+      WORDPRESS_DB_NAME: wordpress
+    volumes:
+      - ./wordpress:/var/www/html
+
+  wordpress5:
+    image: wordpress:5.4.2-php7.2-apache
+    depends_on:
+      - mysql
+    environment:
+      WORDPRESS_DB_HOST: mysql:3306
+      WORDPRESS_DB_USER: usr-wordpress
+      WORDPRESS_DB_PASSWORD: pwd-wordpress
+      WORDPRESS_DB_NAME: wordpress
+    volumes:
+      - ./wordpress:/var/www/html
+
+  nginx:
+    image: nginx:1.19.0
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx-${N:?Defina a variavel N}.conf:/etc/nginx/nginx.conf
+      - ./wordpress:/usr/share/nginx/html
+
+  # Gerador de carga rodando na mesma maquina e na mesma rede da aplicacao
+  locust:
+    image: grubykarol/locust
+    profiles: ["locust"]
+    entrypoint: ["locust"]
+    depends_on:
+      - nginx
+    environment:
+      ATTACKED_HOST: http://nginx
+      POST_ID: ${POST_ID:-5}
+    volumes:
+      - ./locust:/locust
+
+volumes:
+  mysql_data:
