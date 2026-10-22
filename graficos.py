@@ -41,16 +41,22 @@ def grafico(maquina, cenario, linhas, chave, rotulo_y, arquivo):
     ns = sorted({int(l["n"]) for l in linhas})
     valores = {(int(l["n"]), l["carga"]): float(l[chave]) for l in linhas}
     usuarios = {l["carga"]: int(l["usuarios"]) for l in linhas}
+    niveis = [nivel for nivel in NIVEIS if any(carga == nivel[0] for carga in (l["carga"] for l in linhas))]
 
     fig, ax = plt.subplots(figsize=(8, 4.5))
     largura = 0.26
     x = np.arange(len(ns))
-    for i, (nivel, nome) in enumerate(NIVEIS):
-        ys = [valores.get((n, nivel), 0.0) for n in ns]
-        barras = ax.bar(x + (i - 1) * largura, ys, largura, color=CORES[nivel],
+    deslocamentos = np.linspace(-(len(niveis) - 1) / 2, (len(niveis) - 1) / 2, len(niveis))
+    for deslocamento, (nivel, nome) in zip(deslocamentos, niveis):
+        ys = [valores.get((n, nivel), np.nan) for n in ns]
+        barras = ax.bar(x + deslocamento * largura, ys, largura, color=CORES[nivel],
                         edgecolor="black", linewidth=0.6,
                         label=f"{nome} ({usuarios.get(nivel, '?')} usuários)")
-        ax.bar_label(barras, fmt="%.1f", fontsize=7, padding=2)
+        for barra, valor in zip(barras, ys):
+            if not np.isfinite(valor):
+                continue
+            ax.text(barra.get_x() + barra.get_width() / 2, barra.get_height(),
+                    f"{valor:.1f}", ha="center", va="bottom", fontsize=7)
     if chave == "erro_pct":
         ax.axhline(10, color="red", linestyle="--", linewidth=1)
         ax.text(len(ns) - 0.5, 10, " limite 10%", color="red", va="bottom", ha="right", fontsize=8)
